@@ -1,0 +1,11 @@
+---
+ - name: restart nginx
+   service: name=nginx state=restarted
+ - name: enable nginx
+   service: name=nginx enabled=yes
+ - name: restart iptables
+   service: name=iptables state=restarted
+ - name: start iptables
+   service: name=iptable state=started
+ - name: enable iptables
+   service: name=iptables enabled=yes

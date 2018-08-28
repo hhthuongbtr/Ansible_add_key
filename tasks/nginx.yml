@@ -1,0 +1,52 @@
+---
+  - name: yum nginx
+    yum: pkg=nginx state=present
+
+  - name: start and enable nginx
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+
+  - name: Stop service firewalld, if running and disable
+    service:
+      name: firewalld
+      state: stopped
+      enabled: no
+
+  - name: yum iptables
+    yum: pkg=iptables-services state=present
+
+  - name: upload firewall config
+    template: src={{ roles_path }}/{{ products }}/templates/firewall.j2 dest=/etc/sysconfig/iptables
+     backup=yes
+     mode=644
+    notify:
+    - restart iptables
+
+  - name: enable iptables
+    service:
+      name: iptables
+      enabled: yes
+
+  - name: Debug
+    debug:
+      msg: "directory : {{ nginx_log_path }}"
+
+  - name: Create nginx log /var/log/nginx
+    file:
+      path: "{{ nginx_log_path }}"
+      state: directory
+      owner: "{{ ngix_user }}"
+      group: "{{ nginx_group }}"
+      mode: 0775
+
+  - name: upload nginx config
+    template: src={{ roles_path }}/{{ products }}/templates/nginx.j2 dest=/etc/nginx/conf.d/local.conf
+     backup=yes
+     owner=nginx
+     group=nginx
+     mode=644
+    notify:
+    - restart nginx
+

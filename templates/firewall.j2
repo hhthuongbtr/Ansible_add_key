@@ -1,0 +1,17 @@
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+
+# allow hosts
+-A INPUT -s 127.0.0.1 -j ACCEPT
+-A FORWARD -s 127.0.0.1 -j ACCEPT
+-A OUTPUT -s 127.0.0.1 -j ACCEPT
+
+{% for rule in firewall_rule %}
+-{{ rule }}
+{% endfor %}
+
+# Do not remove lines below
+-A INPUT -p tcp --dport 22 -j ACCEPT
+COMMIT

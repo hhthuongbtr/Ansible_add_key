@@ -1,0 +1,8 @@
+---
+  - name: upload user key
+    authorized_key: user={{ item.name }}
+     key="{{ item.key }}"
+     state=present
+    with_items: "{{ sshusers }}"
+    tags: user
+

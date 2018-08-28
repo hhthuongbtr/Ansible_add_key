@@ -1,0 +1,11 @@
+---
+- hosts: all
+  vars_files:
+  - ../vars/common.yml
+  - ../vars/nginx.yml
+
+  tasks:
+  - include: ../tasks/nginx.yml
+  
+  handlers:
+  - include: ../handlers/nginx.yml

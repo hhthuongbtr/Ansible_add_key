@@ -1,0 +1,3 @@
+sshusers:
+ - name: thuonghh
+   key: "{{ lookup('file', '../templates/keys/root') }}"

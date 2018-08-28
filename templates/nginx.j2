@@ -1,0 +1,22 @@
+server {
+    listen {{ nginx_listen_port }};
+    server_name 0.0.0.0;
+    client_max_body_size 4G;
+
+    access_log {{ nginx_access_log_path }};
+    error_log {{ nginx_error_log_path }};
+ 
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://localhost:80;
+        proxy_read_timeout 90;
+    }
+       location /nginx_status {
+            # Turn on stats
+            stub_status on;
+            access_log   off;
+            allow all;
+       }
+}
